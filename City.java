@@ -120,7 +120,7 @@ class City {
                 broadcast();
 
                 // Print distance between cities
-                System.out.println("City " + cityId + ": Distance to other cities"); // แก้ฟอร์มผลลัพธ์
+                System.out.println("City " + cityId + ": ระยะทางที่ส่งไปยังเมืองอื่นๆ"); // แก้ฟอร์มผลลัพธ์
                 for (Map.Entry<Integer, Double> entry : distance.entrySet()) {
                     int neighbor = entry.getKey();
                     double dist = entry.getValue();
@@ -184,7 +184,7 @@ class City {
 
     public void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("City " + cityId + ": Listening"); // แก้ฟอร์มผลลัพธ์ เปลี่ยน listen เป็นอย่างอื่น
+            System.out.println("City " + cityId + ": Ready OK!!"); // แก้ฟอร์มผลลัพธ์ เปลี่ยน listen เป็นอย่างอื่น
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 Thread clientHandler = new Thread(() -> handleClient(clientSocket, clientSocket.getInetAddress().getHostAddress()));
