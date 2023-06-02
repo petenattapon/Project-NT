@@ -57,7 +57,7 @@ class City {
         double a = Math.pow(Math.sin(dlat / 2), 2) +
                 Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.pow(Math.sin(dlon / 2), 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = 6371 * c;  // Radius of the Earth in kilometers
+        double distance = 6371 * c; // Radius of the Earth in kilometers
 
         return distance;
     }
@@ -105,9 +105,7 @@ class City {
             } finally {
                 dataLock.unlock();
             }
-            visited.add(cityId);  // Add current city to the visited set
-
-            // Check if all neighbors have been visited
+            visited.add(cityId);
             boolean allNeighborsVisited = true;
             for (int neighbor : neighbours) {
                 if (neighbor != cityId && !visited.contains(neighbor)) {
@@ -120,10 +118,11 @@ class City {
                 broadcast();
 
                 // Print distance between cities
-                System.out.println("City " + cityId + ": ระยะทางที่ส่งไปยังเมืองอื่นๆ"); // แก้ฟอร์มผลลัพธ์
+                System.out.println("City " + cityId + ": ระยะทางที่ส่งไปยังเมืองอื่นๆ");
                 for (Map.Entry<Integer, Double> entry : distance.entrySet()) {
                     int neighbor = entry.getKey();
-                    double dist = entry.getValue();
+                    Double dist = entry.getValue();
+
                     System.out.println("City " + cityId + " to City " + neighbor + ": " + dist + " km");
                 }
             }
@@ -145,7 +144,8 @@ class City {
             if (distance < currentDistance || currentDistance == Double.POSITIVE_INFINITY) {
                 this.distance.put(neighbour, distance);
                 double updatedDistance = this.distance.get(neighbour); // Store the updated distance
-                System.out.println("City " + cityId + ": Updated distance to City " + neighbour + ": " + updatedDistance + " km"); 
+                System.out.println(
+                        "City " + cityId + ": Updated distance to City " + neighbour + ": " + updatedDistance + " km");
                 distanceUpdated.signalAll();
             }
         } finally {
@@ -184,10 +184,11 @@ class City {
 
     public void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("City " + cityId + ": Ready OK!!"); // แก้ฟอร์มผลลัพธ์ เปลี่ยน listen เป็นอย่างอื่น
+            System.out.println("City " + cityId + ": Ready OK!!");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                Thread clientHandler = new Thread(() -> handleClient(clientSocket, clientSocket.getInetAddress().getHostAddress()));
+                Thread clientHandler = new Thread(
+                        () -> handleClient(clientSocket, clientSocket.getInetAddress().getHostAddress()));
                 clientHandler.start();
             }
         } catch (IOException e) {
@@ -251,10 +252,10 @@ class City {
         }
         // ใช้ ืnode เป็น lat, log ของจังหวัด
         Map<Integer, Coordinates> coordinates = new HashMap<>();
-        coordinates.put(1, new Coordinates(19.9071656, 99.8309));          // เชียงใหม่
-        coordinates.put(2, new Coordinates(18.7877477, 98.9931));          // เชียงราย
-        coordinates.put(3, new Coordinates(13.8199206, 100.0621));          // นครปฐม
-        coordinates.put(4, new Coordinates(13.72917, 100.52389));          // นครนายก
+        coordinates.put(1, new Coordinates(19.9071656, 99.8309)); // เชียงใหม่
+        coordinates.put(2, new Coordinates(18.7877477, 98.9931)); // เชียงราย
+        coordinates.put(3, new Coordinates(13.8199206, 100.0621)); // นครปฐม
+        coordinates.put(4, new Coordinates(13.72917, 100.52389)); // นครนายก
 
         City city = new City(cityId, neighbours, coordinates, 8000);
         city.run();
